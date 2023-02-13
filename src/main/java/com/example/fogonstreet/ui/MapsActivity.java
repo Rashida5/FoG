@@ -1,9 +1,11 @@
 package com.example.fogonstreet.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.Manifest;
@@ -43,6 +45,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMapLongClickListener, GoogleMap.OnMarkerDragListener {
@@ -62,6 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public Post post1;
     public pointSchema pointschema1;
     public double[] arr1;
+    List<Post>Data;
+    Marker [] mark;
     //TextView Long,Lat;
     String La,Lo;
     @Override
@@ -70,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+  Data = new ArrayList<>();
         Intent intent = getIntent();
         String  str = intent.getStringExtra("message_key");
 
@@ -92,8 +97,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pointschema1.setCoordinates(arr1);
         pointschema1.setType("Point");
         post1=new Post(str,pointschema1);
-        //update View Model //
+        //--------------------------------------update View Model----------------------------------------------- //
         postViewModel.patchPost();
+        final Observer<List<Post>> nameObserver = new Observer<List<Post>>() {
+            @Override
+            public void onChanged(@Nullable final List<Post> newName) {
+                // Update the UI, in this case, a TextView.//locations add as markers
+                Log.d("ListSize", String.valueOf(newName.size()));
+                if (mMap != null) {
+             //       Marker markerName = mMap.addMarker(new MarkerOptions().position(new LatLng(Data.get(1).getLocation().getCoordinates()[0], Data.get(1).getLocation().getCoordinates()[1])).title("Title"));
+                  //  Marker markerName1 = mMap.addMarker(new MarkerOptions().position(new LatLng(30.5628741,31.0031367)).title("Title"));
+                   //= new Marker[Data.size()];
+                    if(Data!=null) {
+                        for (int i = 1; i < Data.size(); i++) {
+                            if (mark[i] != null) {
+                                Log.d("MarkerRemoved", "Success");
+                                mark[i].remove();
+                            }
+                        }
+                    }
+                   mark = new Marker[newName.size()];
+                   for(int i=1;i<newName.size();i++){
+                       Log.d("MarkerAdd", String.valueOf(newName.get(i).getLocation().getCoordinates()[0]));
+                       mark[i] = mMap.addMarker(new MarkerOptions().position(new LatLng(newName.get(i).getLocation().getCoordinates()[1], newName.get(i).getLocation().getCoordinates()[0])).title(newName.get(i).getEmail()));
+                   }
+                //    Log.d("ListSize2","Success");
+                }
+                Data = newName;
+            }
+        };
+        postViewModel.getpatchMutableLiveData().observe(this,nameObserver);
     }
 
 
@@ -156,6 +189,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 pointschema1.setCoordinates(arr1);
                 post1.setLocation(pointschema1);
                 postViewModel.setValuePost(post1);
+             //   Marker markerName = mMap.addMarker(new MarkerOptions().position(latLng).title("Title"));
+              /*  for(int i=0;i<Data.size();i++){
+                   Log.d(TAG,String.valueOf(Data.get(i).getEmail()));
+                }*/
+
             }
         }
     };
@@ -168,6 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.rotation(location.getBearing());
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.redcar));
             markerOptions.anchor((float) 0.5, (float) 0.5);
             userLocationMarker = mMap.addMarker(markerOptions);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));

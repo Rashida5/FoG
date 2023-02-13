@@ -33,6 +33,8 @@ public class PostViewModel extends ViewModel  {
     LiveData<String> _email=email;
     MutableLiveData<Post> post1= new MutableLiveData<>();
     MutableLiveData<List<Post>> patchMutableLiveData= new MutableLiveData<>();
+
+
     double latitude,longtiude;
 
     public void getPosts(){
@@ -50,7 +52,7 @@ public class PostViewModel extends ViewModel  {
         });
     }
     public void setEmail(String Email){
-        email.setValue("car33@gmail.com");
+        email.setValue(Email);
     }
 
     public void DeleteMessage(String email){
@@ -119,7 +121,6 @@ public class PostViewModel extends ViewModel  {
                 .flatMap(n-> PostClient.getINSTANCE().patchPost(post1.getValue().getEmail(), post1.getValue()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
         io.reactivex.Observer<List<Post>> observer = new io.reactivex.Observer<List<Post>>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
@@ -129,6 +130,7 @@ public class PostViewModel extends ViewModel  {
             @Override
             public void onNext(@NonNull List<Post> posts) {
                 patchMutableLiveData.setValue(posts);
+                Log.d("PostViewModel",patchMutableLiveData.getValue().toString());
             }
 
             @Override
@@ -146,4 +148,10 @@ public class PostViewModel extends ViewModel  {
 public void setValuePost(Post post){
         post1.setValue(post);
 }
+public MutableLiveData<List<Post>> getpatchMutableLiveData() {
+        if (patchMutableLiveData == null) {
+            patchMutableLiveData = new MutableLiveData<List<Post>>();
+        }
+        return patchMutableLiveData;
+    }
 }
