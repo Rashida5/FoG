@@ -1,9 +1,14 @@
 package com.example.fogonstreet.data;
-import com.example.fogonstreet.model.Post;
+import android.util.Log;
+
+import com.example.fogonstreet.model.update.Update;
+import com.example.fogonstreet.model.update.UpdateResponse;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -19,29 +24,24 @@ public class PostClient {
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+
                 .build();
         apiinterface=retrofit.create(ApiInterface.class);
     }
+
     public static PostClient getINSTANCE() {
         if (null == INSTANCE){
             INSTANCE = new PostClient();
         }
         return INSTANCE;
     }
-    public Call<List<Post>> getPosts(){
-        return apiinterface.getPost();
+    public Observable<List<UpdateResponse>> putUpdate(String Token, Update update){
+
+        return apiinterface.PutLocation("bearer "+Token,update);
     }
 
-    public Observable<List<Post>> getNearby(String s){
-        return apiinterface.Getnearby(s);
-    }
-    /*public Observable<Post> patchPost(String email,Post post){
-        return apiinterface.patchPost(email,post);
-    }*/
-    public Observable<List<Post>> patchPost(String email,Post post){
-        return apiinterface.patchPost(email,post);
-    }
-    public Observable<Post> deletePost(String email){
-        return apiinterface.deletePost(email);
-    }
+  public Call<List<UpdateResponse>> CallUpdate( String Token,Update update){
+
+      return apiinterface.CallLocation( "bearer "+Token,update);
+  }
 }

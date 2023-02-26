@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.MapsActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/value_dp"
+        android:paddingStart="@dimen/value_dp"
+        android:paddingLeft="@dimen/value_dp"
+        android:paddingTop="@dimen/value_dp"
+        android:paddingEnd="@dimen/value_dp"
+        android:paddingRight="@dimen/value_dp"
+        android:paddingBottom="@dimen/value_dp">
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/value_dp"
+            android:paddingStart="@dimen/value_dp"
+            android:paddingLeft="@dimen/value_dp"
+            android:paddingTop="@dimen/value_dp"
+            android:paddingEnd="@dimen/value_dp"
+            android:paddingRight="@dimen/value_dp"
+            android:paddingBottom="@dimen/value_dp"
+            android:switchPadding="@dimen/value_dp"
+            android:text="Switch"
+            android:thumbTextPadding="@dimen/value_dp" />
+    </LinearLayout>
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map"
@@ -7,3 +41,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.fogonstreet.ui.MapsActivity" />
+
+
+
+</LinearLayout>

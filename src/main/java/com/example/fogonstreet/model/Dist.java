@@ -1,6 +1,6 @@
 package com.example.fogonstreet.model;
 
-public class dist {
+public class Dist {
     private double calculated;
 
     public double getCalculated() {

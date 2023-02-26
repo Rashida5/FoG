@@ -18,4 +18,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="keyword">Keyword..</string>
+    <string name="search">Search..</string>
+    <string name="google_maps_key">AIzaSyBqmueX2SW7EYLrTRdhJh1SMwRR2d_AYJk</string>
+    <string name="nearby_places">AIzaSyAeD5UVFu5q0L_U2G6m4J21xF4_EjzLXnU‏</string>
 </resources>
